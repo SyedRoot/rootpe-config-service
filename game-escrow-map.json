@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Chess",
+        "amount": 10,
+        "image": "/games/chess.png",
+        "escrowId": "26212c9d-6a67-47d4-9890-d4b0f6c84100"
+    },
+    {
+        "name": "Apex Legends",
+        "amount": 30,
+        "image": "/games/apex-legends.png",
+        "escrowId": "807a4e2c-e1b2-4a66-aab5-8ae6cf21c0d4"
+    },
+    {
+        "name": "Clash Royale",
+        "amount": 20,
+        "image": "/games/clash-royale.png",
+        "escrowId": "db35e192-46e3-4e8e-90ac-4c427de77f4f"
+    },
+    {
+        "name": "League of Legends",
+        "amount": 40,
+        "image": "/games/legue-of-legends.png",
+        "escrowId": "dec08cb8-d4b3-480d-93dc-77c37c025480"
+    },
+    {
+        "name": "Valorant",
+        "amount": 20,
+        "image": "/games/valorant.png",
+        "escrowId": "07957a0a-9ed9-4a52-982b-6b42c4655856"
+    }
+]
