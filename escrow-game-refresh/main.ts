@@ -1,6 +1,8 @@
 import axios from "axios";
+import { writeFileSync } from "fs";
 
 const ESCROW_URL = "http://api.sandbox.rootpe.com";
+const ORIGINAL_MAP_PATH = "../game-escrow-map.json";
 
 
 export async function fetchToken() {
@@ -46,9 +48,12 @@ export async function createGamingEscrow(authToken: string) {
   return response.data;
 }
 
-async function updateMap(final: object[]) {
-    console.log("\nstub: should update map.");
+function updateMap(final: object[]) {
+    console.log("\n> updating original map..");
     console.log(final);
+
+    writeFileSync(ORIGINAL_MAP_PATH, JSON.stringify(final, undefined, 2));
+    console.log("\n> done.")
 }
 
 async function main() {

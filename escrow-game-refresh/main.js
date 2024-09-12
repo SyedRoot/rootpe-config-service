@@ -48,23 +48,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchToken = fetchToken;
 exports.createGamingEscrow = createGamingEscrow;
 var axios_1 = require("axios");
+var fs_1 = require("fs");
 var ESCROW_URL = "http://api.sandbox.rootpe.com";
+var ORIGINAL_MAP_PATH = "../game-escrow-map.json";
 function fetchToken() {
     return __awaiter(this, void 0, void 0, function () {
+        var response;
         return __generator(this, function (_a) {
-            // let response = await axios.post(
-            //   "https://dev-rootpe.us.auth0.com/oauth/token",
-            //   {
-            //     client_id: "***REMOVED***",
-            //     client_secret:
-            //       "***REMOVED***",
-            //     audience: "https://sandbox.rootpe.com/",
-            //     grant_type: "client_credentials",
-            //   }
-            // );
-            // return response.data.access_token;
-            //
-            return [2 /*return*/, "***REMOVED***"];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.post("https://dev-rootpe.us.auth0.com/oauth/token", {
+                        client_id: process.env.AUTH0_CLIENT_ID,
+                        client_secret: process.env.AUTH0_SECRET,
+                        audience: "https://sandbox.rootpe.com/",
+                        grant_type: "client_credentials",
+                    })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.data.access_token];
+            }
         });
     });
 }
@@ -110,6 +111,11 @@ function createGamingEscrow(authToken) {
             }
         });
     });
+}
+function updateMap(final) {
+    console.log("\n> updating original map..");
+    console.log(final);
+    (0, fs_1.writeFileSync)(ORIGINAL_MAP_PATH, JSON.stringify(final, undefined, 2));
 }
 function main() {
     return __awaiter(this, void 0, void 0, function () {
@@ -164,7 +170,7 @@ function main() {
                         console.log("> original map same as final. exiting..");
                         return [2 /*return*/];
                     }
-                    console.log(final);
+                    updateMap(final);
                     return [2 /*return*/];
             }
         });
