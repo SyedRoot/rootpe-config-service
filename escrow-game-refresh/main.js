@@ -116,6 +116,7 @@ function updateMap(final) {
     console.log("\n> updating original map..");
     console.log(final);
     (0, fs_1.writeFileSync)(ORIGINAL_MAP_PATH, JSON.stringify(final, undefined, 2));
+    console.log("\n> done.");
 }
 function main() {
     return __awaiter(this, void 0, void 0, function () {
