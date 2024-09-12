@@ -125,48 +125,46 @@ function main() {
             switch (_b.label) {
                 case 0:
                     console.log("> fetching original map..");
-                    return [4 /*yield*/, axios_1.default.get("https://raw.githubusercontent.com/RootPe/rootpe-config-service/main/game-escrow-map.json")];
-                case 1:
-                    orig = (_b.sent()).data;
+                    orig = JSON.parse((0, fs_1.readFileSync)("").toString());
                     final = __spreadArray([], orig, true);
                     console.log("> fetching an auth token..");
                     return [4 /*yield*/, fetchToken()];
-                case 2:
+                case 1:
                     authToken = _b.sent();
                     console.log("> looking for expired escrows..\n");
                     i = 0;
-                    _b.label = 3;
-                case 3:
-                    if (!(i < orig.length)) return [3 /*break*/, 10];
+                    _b.label = 2;
+                case 2:
+                    if (!(i < orig.length)) return [3 /*break*/, 9];
                     entry = orig[i];
                     return [4 /*yield*/, escrowInfo(entry.escrowId, authToken)];
-                case 4:
+                case 3:
                     info = (_b.sent()).data;
-                    if (!(info.status != "FUNDING")) return [3 /*break*/, 9];
+                    if (!(info.status != "FUNDING")) return [3 /*break*/, 8];
                     console.log(">> escrowId ".concat(info.id, " is not in funding state. checking possible options.."));
                     _a = info.status;
                     switch (_a) {
-                        case "INITIALIZED": return [3 /*break*/, 5];
+                        case "INITIALIZED": return [3 /*break*/, 4];
                     }
-                    return [3 /*break*/, 6];
-                case 5:
+                    return [3 /*break*/, 5];
+                case 4:
                     console.log("    >>> can be put into funding state. not implemented.");
-                    return [3 /*break*/, 8];
-                case 6:
+                    return [3 /*break*/, 7];
+                case 5:
                     console.log("    >>> unfixable situation. creating new..");
                     return [4 /*yield*/, createGamingEscrow(authToken)];
-                case 7:
+                case 6:
                     newEscrow = (_b.sent()).data;
                     console.log("    >>> done: ".concat(newEscrow.id));
                     final[i].escrowId = newEscrow.id;
+                    _b.label = 7;
+                case 7:
+                    ;
                     _b.label = 8;
                 case 8:
-                    ;
-                    _b.label = 9;
-                case 9:
                     i++;
-                    return [3 /*break*/, 3];
-                case 10:
+                    return [3 /*break*/, 2];
+                case 9:
                     if (orig === final) {
                         console.log("> original map same as final. exiting..");
                         return [2 /*return*/];

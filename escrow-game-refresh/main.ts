@@ -1,5 +1,5 @@
 import axios from "axios";
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 const ESCROW_URL = "http://api.sandbox.rootpe.com";
 const ORIGINAL_MAP_PATH = "../game-escrow-map.json";
@@ -58,7 +58,7 @@ function updateMap(final: object[]) {
 
 async function main() {
     console.log("> fetching original map..");
-    let orig = (await axios.get("https://raw.githubusercontent.com/RootPe/rootpe-config-service/main/game-escrow-map.json")).data;
+    let orig = JSON.parse(readFileSync(ORIGINAL_MAP_PATH).toString());
     let final = [...orig];
 
     console.log("> fetching an auth token..");
