@@ -26,3 +26,8 @@ jobs:
           AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_SECRET: ${{ secrets.AUTH0_SECRET }}
         run: npm start
+
+      - name: Commit new map
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: chore: automatic refresh escrow
