@@ -16,11 +16,10 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Navigate to escrow-game-refresh
-        run: cd ./escrow-game-refresh
-
       - name: Install dependencies
+        working-directory: ./escrow-game-refresh
         run: npm install
 
       - name: Start refresh
+        working-directory: ./escrow-game-refresh
         run: npm start
