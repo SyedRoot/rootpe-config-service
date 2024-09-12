@@ -5,7 +5,7 @@ const ESCROW_URL = "http://api.sandbox.rootpe.com";
 const ORIGINAL_MAP_PATH = "../game-escrow-map.json";
 
 
-export async function fetchToken() {
+async function fetchToken() {
   let response = await axios.post(
     "https://dev-rootpe.us.auth0.com/oauth/token",
     {
@@ -29,7 +29,7 @@ async function escrowInfo(id: string, authToken: string) {
   return response.data;
 }
 
-export async function createGamingEscrow(authToken: string) {
+async function createGamingEscrow(authToken: string) {
   const response = await axios.post(`${ESCROW_URL}/escrows/gaming/create`, {
     name: "gaming escrow [demo]",
     currency: "f48ee79e-5a38-33a3-918e-c7faaa0d2ce0", // GINRC
@@ -43,6 +43,16 @@ export async function createGamingEscrow(authToken: string) {
       headers: {
           Authorization: `Bearer ${authToken}`
       }
+  });
+
+  return response.data;
+}
+
+async function startFunding(id:string, authToken: string) {
+  const response = await axios.post(`${ESCROW_URL}/escrows/${id}/start_funding`, undefined, {
+    headers: {
+      Authorization: `Bearer ${authToken}`
+    }
   });
 
   return response.data;
@@ -75,12 +85,19 @@ async function main() {
 
             switch (info.status) {
                 case "INITIALIZED":
-                  console.log("    >>> can be put into funding state. not implemented.")
+                  console.log("    >>> initialized, but not started. starting now..")
+
+                  await startFunding(info.id, authToken);
+                  console.log(`    >>> done: ${info.id}`)
                   break;
                 default:
                   console.log("    >>> unfixable situation. creating new..")
 
                   const { data: newEscrow } = await createGamingEscrow(authToken);
+
+                  console.log("    >>> start funding..")
+                  await startFunding(newEscrow.id, authToken);
+
                   console.log(`    >>> done: ${newEscrow.id}`)
 
                   final[i].escrowId = newEscrow.id;

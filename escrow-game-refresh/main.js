@@ -45,8 +45,6 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchToken = fetchToken;
-exports.createGamingEscrow = createGamingEscrow;
 var axios_1 = require("axios");
 var fs_1 = require("fs");
 var ESCROW_URL = "http://api.sandbox.rootpe.com";
@@ -112,6 +110,23 @@ function createGamingEscrow(authToken) {
         });
     });
 }
+function startFunding(id, authToken) {
+    return __awaiter(this, void 0, void 0, function () {
+        var response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, axios_1.default.post("".concat(ESCROW_URL, "/escrows/").concat(id, "/start_funding"), undefined, {
+                        headers: {
+                            Authorization: "Bearer ".concat(authToken)
+                        }
+                    })];
+                case 1:
+                    response = _a.sent();
+                    return [2 /*return*/, response.data];
+            }
+        });
+    });
+}
 function updateMap(final) {
     console.log("\n> updating original map..");
     console.log(final);
@@ -135,36 +150,44 @@ function main() {
                     i = 0;
                     _b.label = 2;
                 case 2:
-                    if (!(i < orig.length)) return [3 /*break*/, 9];
+                    if (!(i < orig.length)) return [3 /*break*/, 11];
                     entry = orig[i];
                     return [4 /*yield*/, escrowInfo(entry.escrowId, authToken)];
                 case 3:
                     info = (_b.sent()).data;
-                    if (!(info.status != "FUNDING")) return [3 /*break*/, 8];
+                    if (!(info.status != "FUNDING")) return [3 /*break*/, 10];
                     console.log(">> escrowId ".concat(info.id, " is not in funding state. checking possible options.."));
                     _a = info.status;
                     switch (_a) {
                         case "INITIALIZED": return [3 /*break*/, 4];
                     }
-                    return [3 /*break*/, 5];
+                    return [3 /*break*/, 6];
                 case 4:
-                    console.log("    >>> can be put into funding state. not implemented.");
-                    return [3 /*break*/, 7];
+                    console.log("    >>> initialized, but not started. starting now..");
+                    return [4 /*yield*/, startFunding(info.id, authToken)];
                 case 5:
+                    _b.sent();
+                    console.log("    >>> done: ".concat(info.id));
+                    return [3 /*break*/, 9];
+                case 6:
                     console.log("    >>> unfixable situation. creating new..");
                     return [4 /*yield*/, createGamingEscrow(authToken)];
-                case 6:
+                case 7:
                     newEscrow = (_b.sent()).data;
+                    console.log("    >>> start funding..");
+                    return [4 /*yield*/, startFunding(newEscrow.id, authToken)];
+                case 8:
+                    _b.sent();
                     console.log("    >>> done: ".concat(newEscrow.id));
                     final[i].escrowId = newEscrow.id;
-                    _b.label = 7;
-                case 7:
+                    _b.label = 9;
+                case 9:
                     ;
-                    _b.label = 8;
-                case 8:
+                    _b.label = 10;
+                case 10:
                     i++;
                     return [3 /*break*/, 2];
-                case 9:
+                case 11:
                     if (orig === final) {
                         console.log("> original map same as final. exiting..");
                         return [2 /*return*/];
