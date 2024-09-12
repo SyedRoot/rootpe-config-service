@@ -1,6 +1,7 @@
 on:
-  schedule:
-    - cron: "*/5 * * * *"  # FIXME: set this to once per day
+  push
+  # schedule:
+  #   - cron: "*/5 * * * *"  # FIXME: set this to once per day
 
 jobs:
   cron:
