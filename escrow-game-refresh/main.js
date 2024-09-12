@@ -125,7 +125,7 @@ function main() {
             switch (_b.label) {
                 case 0:
                     console.log("> fetching original map..");
-                    orig = JSON.parse((0, fs_1.readFileSync)("").toString());
+                    orig = JSON.parse((0, fs_1.readFileSync)(ORIGINAL_MAP_PATH).toString());
                     final = __spreadArray([], orig, true);
                     console.log("> fetching an auth token..");
                     return [4 /*yield*/, fetchToken()];
